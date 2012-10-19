@@ -33,20 +33,14 @@ int main(void)
    addr_server.sun_family = AF_LOCAL;
    u_sockaddr.un = &addr_server;
    bind(listen_sock, u_sockaddr.ad, sizeof(addr_server));
-   printf("begin listen\n");
    listen(listen_sock, 5);
-   printf("listen end\n");
    do
    {
-      /* Accept a connection.   */
       u_sockaddr.un = &addr_client;
       client_sock = accept(listen_sock, u_sockaddr.ad, &client_name_len);
-      /* Handle the connection.   */
       quit_msg= server(client_sock);
-      /* Close our end of the connection.   */
       close (client_sock);
    } while (!quit_msg);
-   /* Remove the socket file.   */
    close (listen_sock);
    unlink (path);
    return 0;
