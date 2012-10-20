@@ -28,8 +28,9 @@ int main(int  argc,
       printf("Client not connected.\n");
       return (-1);
    }
-   if ((nb_str =parse_arg(argc, argv, &print_me)) == 0)
+   if ((print_me = parse_arg(argc, argv, &nb_str)) == NULL)
       return (close_server(listen_sock));
+   printf("nb = %d", nb_str);
    for (; nb_str > 0; nb_str--)
    {
       len = strlen(print_me[nb_str - 1]);
