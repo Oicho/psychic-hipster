@@ -1,8 +1,10 @@
 #define _XOPEN_SOURCE
+
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <ctl_parse.h>
 //#include "print_helps"
 
 char *create_str(char c)
@@ -15,26 +17,21 @@ char *create_str(char c)
    return (ret);
 }
 
-void parse_value(int  input_char,
-		 char **larg,
-		 int nb_arg)
+void parse_value(int   input_char,
+		 char  **larg,
+		 int   nb_arg,
+		 t_oau *find_oau)
 {
    char *acc;
-   printf("%c\n", input_char);
-   switch (input_char)
-   {
-      case 'a':
-      case 'o':
-	 if (nb_arg != 0 && !((*larg)[0] != 'a' || (*larg)[0] != 'o'))
-	    printf("Invalid argument placement.\nUse --help.\n");
-      default :
-      {
-	 acc = create_str(input_char);
-	 strcat(*larg, acc);
-	 free(acc);
-      }
-      break;
-   }
+   if (input_char == 'u')
+      find_oau->u = 1;
+   if (input_char == 'a')
+      find_oau->a = 1;
+   if (input_char == 'o')
+      find_oau->o = 1;
+   acc = create_str(input_char);
+   strcat(*larg, acc);
+   free(acc);
 }
 char** concat_svname(int  argc,
 		     char **argv,
@@ -64,6 +61,7 @@ char** parse_arg(int  argc,
 {
    char       input_char;
    int        nb_arg;
+   t_oau      oau;
    extern int opterr;
    char       *format = "qouhkrda";
    char       *larg = malloc(40);
@@ -77,9 +75,10 @@ char** parse_arg(int  argc,
 	 free(larg);
 	 return (NULL);
       }
-      parse_value(input_char, &larg, nb_arg);
+      else if ()
+	 parse_value(input_char, &larg, nb_arg, oau);
       nb_arg++;
    }
    printf("larg = %s\n", larg);
-   return (concat_svname(argc, argv, optind, larg, p_nb_arg));
+   return (concat_svname(argc, argv, optind, larg, p_nb_arg, oau));
 }
