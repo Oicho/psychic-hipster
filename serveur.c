@@ -36,8 +36,10 @@ int main(void)
    listen(listen_sock, 5);
    do
    {
+      printf("main loop\n");
       u_sockaddr.un = &addr_client;
       client_sock = accept(listen_sock, u_sockaddr.ad, &client_name_len);
+      printf("accepted\n");
       quit_msg= server(client_sock);
       close (client_sock);
    } while (!quit_msg);
